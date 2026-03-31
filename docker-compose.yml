@@ -1,0 +1,13 @@
+services:
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    network_mode: host
+    restart: unless-stopped
+    devices:
+      - /dev/dri/card1:/dev/dri/card1
+      - /dev/dri/renderD128:/dev/dri/renderD128
+    volumes:
+      - /media/container-storage/plex/plex-config:/config
+      - /media/container-storage/plex/temp:/transcode
+      - /media/plexmedia:/data
