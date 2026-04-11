@@ -7,6 +7,7 @@ services:
     devices:
       - /dev/dri/card1:/dev/dri/card1
       - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/kfd:/dev/kfd
     volumes:
       - /media/container-storage/plex/plex-config:/config
       - /media/container-storage/plex/temp:/transcode
