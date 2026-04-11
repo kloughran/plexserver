@@ -4,9 +4,10 @@ services:
     container_name: plex
     network_mode: host
     restart: unless-stopped
+    environment:
+      - LIBVA_DRIVER_NAME=radeonsi
     devices:
-      - /dev/dri/card1:/dev/dri/card1
-      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri:/dev/dri
       - /dev/kfd:/dev/kfd
     volumes:
       - /media/container-storage/plex/plex-config:/config
