@@ -8,8 +8,21 @@ services:
       - LIBVA_DRIVER_NAME=radeonsi
     devices:
       - /dev/dri:/dev/dri
-      - /dev/kfd:/dev/kfd
     volumes:
       - /media/container-storage/plex/plex-config:/config
-      - /media/container-storage/plex/temp:/transcode
       - /media/plexmedia:/data
+      - type: tmpfs
+        target: /transcode
+        tmpfs:
+          size: 8gb
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=3600
+      - WATCHTOWER_INCLUDE_STOPPED=false
