@@ -4,7 +4,9 @@ services:
     container_name: plex
     network_mode: host
     restart: unless-stopped
+    stop_grace_period: 60s
     environment:
+      - TZ=America/Chicago
       - LIBVA_DRIVER_NAME=radeonsi
     devices:
       - /dev/dri:/dev/dri
@@ -15,14 +17,3 @@ services:
         target: /transcode
         tmpfs:
           size: 8gb
-
-  watchtower:
-    image: containrrr/watchtower
-    container_name: watchtower
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_POLL_INTERVAL=3600
-      - WATCHTOWER_INCLUDE_STOPPED=false

@@ -8,6 +8,7 @@ pipeline {
                     sh 'docker login --username $USERNAME --password $PASSWORD'
                 }
                 sh 'docker compose pull'
+                sh 'docker stop plex || true'
                 sh 'docker rm -f plex || true'
                 sh 'docker compose up -d'
             }
