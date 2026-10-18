@@ -2,18 +2,49 @@ services:
   plex:
     image: plexinc/pms-docker
     container_name: plex
-    network_mode: host
     restart: unless-stopped
     stop_grace_period: 60s
+    networks:
+      - plex
+    ports:
+      - 32400:32400/tcp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    # Docker's embedded DNS forwards to the host's upstream (the router), which the firewall blocks.
+    dns:
+      - 1.1.1.1
+      - 9.9.9.9
     environment:
       - TZ=America/Chicago
       - LIBVA_DRIVER_NAME=radeonsi
+      - ADVERTISE_IP=http://192.168.1.3:32400/
+      - PLEX_UID=1500
+      - PLEX_GID=1500
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETUID
+      - SETGID
+      - KILL
     devices:
       - /dev/dri:/dev/dri
     volumes:
       - /media/container-storage/plex/plex-config:/config
-      - /media/plexmedia:/data
+      - /media/plexmedia:/data:ro
       - type: tmpfs
         target: /transcode
         tmpfs:
           size: 8gb
+
+networks:
+  plex:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
