@@ -1,0 +1,8 @@
+[Unit]
+Description=Country allowlist for Plex port 32400
+After=network-online.target docker.service ufw.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/plex-geoblock
