@@ -1,9 +1,0 @@
-[Unit]
-Description=Apply and refresh the Plex country allowlist
-
-[Timer]
-OnBootSec=1min
-OnUnitActiveSec=1h
-
-[Install]
-WantedBy=timers.target
